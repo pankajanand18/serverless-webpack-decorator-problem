@@ -1,3 +1,97 @@
+# How to reproduce the issue 
+
+Setup the codebase 
+```shell
+git clone git@github.com:pankajanand18/serverless-webpack-decorator-problem.git
+yarn install 
+sls install dynamodb-local
+```
+Invoke the function locally
+```shell
+SLS_DEBUG=* AWS_PROFILE=YOURPOFILE sls invoke local --function hello
+```
+It generates the following error 
+```javascript
+Error: make sure you have enabled the typescript compiler options which enable us to work with decorators (see doc)
+    at createNewProperty (/Users/YourUserName/dev/serverless-webpack-decorator-problem/node_modules/@shiftcoders/dynamo-easy/src/decorator/impl/property/init-or-update-property.function.ts:48:11)
+    at Object.initOrUpdateProperty (/Users/YourUserName/dev/serverless-webpack-decorator-problem/node_modules/@shiftcoders/dynamo-easy/src/decorator/impl/property/init-or-update-property.function.ts:31:16)
+    at Property (/Users/YourUserName/dev/serverless-webpack-decorator-problem/node_modules/@shiftcoders/dynamo-easy/src/decorator/impl/property/property.decorator.ts:22:7)
+    at eval (webpack:///./user.model.ts?:18:410)
+    at Array.reduce (<anonymous>)
+    at _applyDecoratedDescriptor (webpack:///./user.model.ts?:18:367)
+    at eval (webpack:///./user.model.ts?:53:27)
+    at Object../user.model.ts (/Users/YourUserName/dev/serverless-webpack-decorator-problem/.webpack/service/handler.js:109:1)
+    at __webpack_require__ (/Users/YourUserName/dev/serverless-webpack-decorator-problem/.webpack/service/handler.js:20:30)
+    at eval (webpack:///./handler.ts?:8:13)
+    at Object../handler.ts (/Users/YourUserName/dev/serverless-webpack-decorator-problem/.webpack/service/handler.js:97:1)
+    at __webpack_require__ (/Users/YourUserName/dev/serverless-webpack-decorator-problem/.webpack/service/handler.js:20:30)
+    at /Users/YourUserName/dev/serverless-webpack-decorator-problem/.webpack/service/handler.js:84:18
+    at Object.<anonymous> (/Users/YourUserName/dev/serverless-webpack-decorator-problem/.webpack/service/handler.js:87:10)
+    at Module._compile (internal/modules/cjs/loader.js:778:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:789:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+    at Module.require (internal/modules/cjs/loader.js:692:17)
+    at require (internal/modules/cjs/helpers.js:25:18)
+    at AwsInvokeLocal.invokeLocalNodeJs (/usr/local/lib/node_modules/serverless/lib/plugins/aws/invokeLocal/index.js:733:33)
+    at AwsInvokeLocal.invokeLocal (/usr/local/lib/node_modules/serverless/lib/plugins/aws/invokeLocal/index.js:216:19)
+    at Object.invoke:local:invoke [as hook] (/usr/local/lib/node_modules/serverless/lib/plugins/aws/invokeLocal/index.js:49:47)
+    at BbPromise.reduce (/usr/local/lib/node_modules/serverless/lib/classes/PluginManager.js:501:55)
+    at tryCatcher (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/util.js:16:23)
+    at Object.gotValue (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/reduce.js:168:18)
+    at Object.gotAccum (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/reduce.js:155:25)
+    at Object.tryCatcher (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/util.js:16:23)
+    at Promise._settlePromiseFromHandler (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/promise.js:547:31)
+    at Promise._settlePromise (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/promise.js:604:18)
+    at Promise._settlePromise0 (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/promise.js:649:10)
+    at Promise._settlePromises (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/promise.js:729:18)
+    at _drainQueueStep (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/async.js:93:12)
+    at _drainQueue (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/async.js:86:9)
+    at Async._drainQueues (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/async.js:102:5)
+    at Immediate.Async.drainQueues [as _onImmediate] (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/async.js:15:14)
+    at runCallback (timers.js:705:18)
+    at tryOnImmediate (timers.js:676:5)
+    at processImmediate (timers.js:658:5)
+    at process.topLevelDomainCallback (domain.js:126:23)
+
+  Error --------------------------------------------------
+
+  Error: Exception encountered when loading /Users/YourUserName/dev/serverless-webpack-decorator-problem/.webpack/service/handler
+      at AwsInvokeLocal.invokeLocalNodeJs (/usr/local/lib/node_modules/serverless/lib/plugins/aws/invokeLocal/index.js:738:13)
+      at AwsInvokeLocal.invokeLocal (/usr/local/lib/node_modules/serverless/lib/plugins/aws/invokeLocal/index.js:216:19)
+      at Object.invoke:local:invoke [as hook] (/usr/local/lib/node_modules/serverless/lib/plugins/aws/invokeLocal/index.js:49:47)
+      at BbPromise.reduce (/usr/local/lib/node_modules/serverless/lib/classes/PluginManager.js:501:55)
+      at tryCatcher (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/util.js:16:23)
+      at Object.gotValue (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/reduce.js:168:18)
+      at Object.gotAccum (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/reduce.js:155:25)
+      at Object.tryCatcher (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/util.js:16:23)
+      at Promise._settlePromiseFromHandler (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/promise.js:547:31)
+      at Promise._settlePromise (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/promise.js:604:18)
+      at Promise._settlePromise0 (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/promise.js:649:10)
+      at Promise._settlePromises (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/promise.js:729:18)
+      at _drainQueueStep (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/async.js:93:12)
+      at _drainQueue (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/async.js:86:9)
+      at Async._drainQueues (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/async.js:102:5)
+      at Immediate.Async.drainQueues (/usr/local/lib/node_modules/serverless/node_modules/bluebird/js/release/async.js:15:14)
+      at runCallback (timers.js:705:18)
+      at tryOnImmediate (timers.js:676:5)
+      at processImmediate (timers.js:658:5)
+      at process.topLevelDomainCallback (domain.js:126:23)
+
+  Get Support --------------------------------------------
+     Docs:          docs.serverless.com
+     Bugs:          github.com/serverless/serverless/issues
+     Issues:        forum.serverless.com
+
+  Your Environment Information ---------------------------
+     Operating System:          darwin
+     Node Version:              10.23.3
+     Framework Version:         2.25.2
+     Plugin Version:            4.4.3
+     SDK Version:               2.3.2
+     Components Version:        3.7.0
+```
 # Serverless TypeScript Starter
 
 A Serverless starter that adds TypeScript, serverless-offline, linting, environment variables, and unit test support.
