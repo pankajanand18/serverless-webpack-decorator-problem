@@ -1,0 +1,77 @@
+# NOTE: update this with your service name
+service: serverless-webpack-decorator-problem
+
+# Create an optimized package for our functions 
+package:
+  individually: false
+
+plugins:
+  - serverless-webpack
+  - serverless-dynamodb-local
+  - serverless-offline
+  - serverless-dotenv-plugin # Load .env as environment variables
+
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-west-2
+  # To load environment variables externally
+  # rename env.example to .env and uncomment
+  # the following line. Also, make sure to not
+  # commit your .env.
+  #
+  #environment:
+  #  SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
+resources:
+  Resources:
+    UserDataStore:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: unique_id
+            AttributeType: S
+          - AttributeName: sort_key
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: unique_id
+            KeyType: HASH
+          - AttributeName: sort_key
+            KeyType: RANGE
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        TableName: user-data-store
+
+custom:
+  webpack:
+    webpackConfig: webpack.config.js
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: yarn
+    packagerOptions:
+      scripts:
+        - rm -rf node_modules/aws-sdk #This is done because some dependencies include it
+  dynamodb:
+    # If you only want to use DynamoDB Local in some stages, declare them here
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      #seed: true
+      convertEmptyValues: true
+    # Uncomment only if you already have a DynamoDB running locally
+    # noStart: true
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello
+          method: get

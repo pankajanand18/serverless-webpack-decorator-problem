@@ -1,0 +1,36 @@
+{
+  "name": "serverless-webpack-decorator-problem",
+  "version": "0.1.0",
+  "description": "A TypeScript starter for Serverless Framework",
+  "main": "handler.js",
+  "scripts": {
+    "test": "serverless-bundle test"
+  },
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AnomalyInnovations/serverless-typescript-starter.git"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-decorators": "^7.12.13",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/aws-lambda": "^8.10.64",
+    "@types/jest": "^26.0.14",
+    "babel-plugin-transform-modern-regexp": "^0.0.6",
+    "copy-webpack-plugin": "^7.0.0",
+    "fork-ts-checker-webpack-plugin": "^6.1.0",
+    "serverless-bundle": "3.2.1",
+    "serverless-dotenv-plugin": "^3.0.0",
+    "serverless-dynamodb-local": "^0.2.39",
+    "serverless-offline": "^6.8.0",
+    "serverless-webpack": "^5.3.5",
+    "webpack-node-externals": "^2.5.2"
+  },
+  "dependencies": {
+    "@shiftcoders/dynamo-easy": "^7.0.0",
+    "reflect-metadata": "^0.1.12"
+  }
+}
