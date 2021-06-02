@@ -34,6 +34,7 @@ module.exports = {
                 loader: 'babel-loader',
                 options: {
                     plugins: [
+			    "babel-plugin-transform-typescript-metadata",
                         '@babel/plugin-proposal-async-generator-functions',
                         ['@babel/plugin-proposal-decorators', { legacy: true }],
                         '@babel/proposal-class-properties',
